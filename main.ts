@@ -8,27 +8,32 @@ let Alieno: Sprite = null
 let Alieno2: Sprite = null
 let Personaggio: Sprite = null
 let punti = 0
+let barriera: Sprite = null
 //personaggio
 Personaggio = sprites.create(img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . 7 7 . . . . . . . 
-    . . . . . . . 7 7 . . . . . . . 
-    . . . . . . 7 7 7 7 . . . . . . 
-    . . . . . . 7 7 7 7 . . . . . . 
-    . . . . . 7 7 7 7 7 7 . . . . . 
-    . . 7 7 7 7 7 7 7 7 7 7 7 7 . . 
-    . 7 7 7 7 7 7 7 7 7 7 7 7 7 7 . 
-    7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-    7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-    7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-    7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-    `, SpriteKind.Player)
-Personaggio.setPosition(80, 110)
+    . . . . . . . . . . . . . . . .
+    . . . . . . . . . . . . . . . .
+    . . . . . . . . . . . . . . . .
+    . . . . . . . . . . . . . . . .
+    . . . . . . . . . . . . . . . .
+    . . . . . . . 7 7 . . . . . . .
+    . . . . . . . 7 7 . . . . . . .
+    . . . . . . 7 7 7 7 . . . . . .
+    . . . . . . 7 7 7 7 . . . . . .
+    . . . . . 7 7 7 7 7 7 . . . . .
+    . . 7 7 7 7 7 7 7 7 7 7 7 7 . .
+    . 7 7 7 7 7 7 7 7 7 7 7 7 7 7 .
+    7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7
+    7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7
+    7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7
+    7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7
+`, SpriteKind.Player)
+Personaggio.setPosition(80, 111)
 controller.moveSprite(Personaggio, 100, 0)
+barriera = sprites.create(img`
+    7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7
+`, SpriteKind.Food)
+barriera.setPosition(80, 120)
 //funzioni
 function sparo () {
     Proiettile = sprites.create(img`
@@ -43,6 +48,8 @@ function sparo () {
         `, SpriteKind.Projectile)
     Proiettile.setPosition(Personaggio.x, Personaggio.y)
     Proiettile.setVelocity(0, -100)
+
+    music.pewPew.play()
 }
 function CreaNemico () {
     forever(function() {
@@ -106,6 +113,9 @@ if (punti == 1) {
     CreaNemico2()
 }
 CreaNemico()
+sprites.onOverlap(SpriteKind.Food, SpriteKind.Enemy, function(sprite: Sprite, otherSprite: Sprite) {
+    otherSprite.destroy()
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function(sprite: Sprite, otherSprite: Sprite) {
     game.reset()
 })
